@@ -81,7 +81,7 @@ export default function LibraryPage() {
   return (
     <section className="section">
       <div className="container" style={{ display: "grid", gap: 16 }}>
-        <h2 className="title-section">Biblioteca de vídeos</h2>
+        <h2 className="title-section">Videos</h2>
 
         <FiltersBar
           search={search}

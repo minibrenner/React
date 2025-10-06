@@ -1,7 +1,7 @@
 .button {
-  color: #ffffff;
+  color: #000000;
   font-size: 17px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(80, 80, 80, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius);
   cursor: pointer;

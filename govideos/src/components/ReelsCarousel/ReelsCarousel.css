@@ -3,7 +3,8 @@
    --------------------------------------------------------------------------- */
 
 .carousel {
-  position: relative; /* permite posicionar bot�es dentro */
+  position: relative; 
+  /* permite posicionar bot�es dentro */
 }
 
 .carousel-track {
@@ -22,7 +23,7 @@
 }
 
 .carousel-item {
-  width: min(375px, 100vw);      /* largura m�xima de 360px, ou 80% da tela */
+  width: min(220px, 100vw);      /* largura m�xima de 360px, ou 80% da tela */
   scroll-snap-align: start;     /* cada item �ancora� no come�o ao parar */
   flex-shrink: 0;               /* impede de encolher quando espa�o for pequeno */
 }

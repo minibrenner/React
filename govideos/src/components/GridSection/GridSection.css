@@ -10,3 +10,13 @@
 }
 .grid-toolbar { margin-bottom: 12px; }
 .empty-state { padding: 16px; opacity: 0.75; }
+
+.grid-footer {
+  display: flex;
+  justify-content: flex-end; /* botão no canto inferior direito */
+  margin-top: 12px;
+}
+
+.video-grid {
+  margin-bottom: 8px; /* dá um respiro antes do botão */
+}

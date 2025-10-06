@@ -1,7 +1,8 @@
 :root {
   --maxw: 1200px;
-  --gap: 16px;
+  --gap:19px;
   --radius: 12px;
+  --top: 10px; 
 }
 
 * { box-sizing: border-box; }
