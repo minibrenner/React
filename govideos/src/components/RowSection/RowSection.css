@@ -1,0 +1,17 @@
+.row4 {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais */
+}
+
+@media (max-width: 1024px) {
+  .row4 {
+    grid-template-columns: repeat(2, 1fr); /* no tablet, 2 por linha */
+  }
+}
+
+@media (max-width: 640px) {
+  .row4 {
+    grid-template-columns: 1fr; /* no celular, 1 por linha */
+  }
+}

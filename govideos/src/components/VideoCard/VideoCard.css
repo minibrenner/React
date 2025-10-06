@@ -1,0 +1,30 @@
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  border: 1px solid #eef0f2;
+}
+
+.card-body {
+  padding: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 12px 10px 14px;
+  white-space: nowrap; /* não deixa quebrar linha */
+  overflow: hidden; /* esconde o que passar */
+  text-overflow: ellipsis;
+}
+.desc {
+  font-size: 14px;
+  color: #555;
+  margin: 0 0 8px;
+  display: -webkit-box; /* ativa o "box flexível" */
+  -webkit-line-clamp: 3; /* número máximo de linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden; /* esconde o texto extra */
+   text-overflow: ellipsis;   /* adiciona "..." no final */
+}

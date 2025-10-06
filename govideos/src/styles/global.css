@@ -1,0 +1,33 @@
+:root {
+  --maxw: 1200px;
+  --gap: 16px;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  color: #111;
+  background: #f6f7f9;
+}
+.title-section {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Poppins, sans-serif;
+  font-size: 2vw;
+  font-weight: 700;
+  margin: 0 0 1rem 1rem;
+  position: relative; /* necessário para posicionar o ::before */
+  padding-left: 12px; /* cria espaço para o risquinho */
+}
+
+.title-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;           /* ajusta verticalmente */
+  bottom: 10%;        /* risquinho não pega altura total, fica mais “bonito” */
+  width: 6px;         /* largura da barra */
+  background-color: #FFD700; /* cor */
+  border-radius: 2px; /* opcional: cantos arredondados */
+}

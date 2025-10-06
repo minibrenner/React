@@ -1,0 +1,28 @@
+/* ---------------------------------------------------------------------------
+   Estilos para o carrossel de Reels
+   --------------------------------------------------------------------------- */
+
+.carousel {
+  position: relative; /* permite posicionar bot�es dentro */
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;       /* organiza os itens em colunas (um ao lado do outro) */
+  gap: var(--gap);              /* espa�o entre os v�deos (usa vari�vel global) */
+  overflow-x: hidden;           /* impede rolagem manual */
+  scrollbar-width: none;        /* esconde barra no Firefox */
+  scroll-snap-type: x mandatory;/* trava no item mais pr�ximo */
+  scroll-behavior: smooth;      /* rolagem suave */
+  padding-bottom: 8px;          /* um espa�o extra para n�o colar no rodap� */
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;                /* esconde barra no Chrome/Safari/Edge */
+}
+
+.carousel-item {
+  width: min(375px, 100vw);      /* largura m�xima de 360px, ou 80% da tela */
+  scroll-snap-align: start;     /* cada item �ancora� no come�o ao parar */
+  flex-shrink: 0;               /* impede de encolher quando espa�o for pequeno */
+}

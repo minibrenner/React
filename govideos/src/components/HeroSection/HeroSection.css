@@ -1,0 +1,26 @@
+.section { margin-top: 28px; }
+
+.container {
+  width: min(100%, var(--maxw));
+  margin-inline: auto;
+  padding: 24px 16px;
+}
+
+.hero-grid {
+  display: grid;
+  gap: var(--gap);
+
+  /* 🔹 2 colunas × 2 linhas */
+  grid-template-columns: 1fr 1fr;   /* duas colunas iguais */
+  grid-template-rows: repeat(2, auto); /* duas linhas automáticas */
+}
+
+.hero-grid > * {
+  /* cada VideoCard vai ocupar 1 célula do grid */
+}
+
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr; /* no tablet/celular vira 1 coluna só */
+  }
+}

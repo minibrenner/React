@@ -1,0 +1,127 @@
+/* Fonte e variáveis (pode aproveitar as do seu global.css) */
+:root {
+  --gap: 16px;
+  --radius: 12px;
+}
+
+/* Container principal do footer */
+.site-footer {
+  background-color: #1f4563;
+  color: #eaecf0;
+  padding: 64px 80px;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  
+}
+
+/* --- Topo: título + botão --- */
+.footer-newsletter {
+  display: flex;
+  justify-content: space-between; /* joga o h3 pra esquerda e o botão pra direita */
+  align-items: center;            /* alinha na vertical */
+  width: 100%;                    /* ocupa toda a largura */
+  margin-bottom: 48px;
+  position: relative;             /* referencia para o botão */
+}
+
+.newsletter-text h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+
+/* Botão Topo ↑ */
+
+
+
+/* --- Colunas de links --- */
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 6 colunas no desktop */
+  gap: 32px;
+  margin-bottom: 48px;
+ 
+}
+
+.links-column h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #98a2b3;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  align-items: center;
+
+ 
+}
+
+.links-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+ 
+}
+
+.links-column li { margin-bottom: 12px; }
+
+.links-column a {
+  color: #eaecf0;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+.links-column a:hover { text-decoration: underline; }
+
+/* --- Divisória e parte inferior --- */
+.footer-divider {
+  border: none;
+  height: 1px;
+  background-color: #475467;
+  margin: 32px 0;
+  
+}
+
+
+
+.footer-logo img { height: 32px; }
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.footer-copyright p {
+  margin: 0;
+  font-size: 16px;
+  color: #98a2b3;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 1024px) {
+  .footer-links {
+    grid-template-columns: repeat(3, 1fr); /* tablet: 3 colunas */
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer { padding: 48px 24px; }
+
+  .footer-newsletter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr); /* celular: 2 colunas */
+  }
+
+
+}

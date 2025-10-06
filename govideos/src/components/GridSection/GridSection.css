@@ -1,0 +1,12 @@
+.video-grid {
+  display: grid; /* Ativa o modo grade */
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais */
+  gap: var(--gap); /* Espaço entre os vídeos (usa variável global) */
+}
+
+.video-grid-item {
+  /* Os itens já respeitam o grid automaticamente */
+  scroll-snap-align: start; /* mantém consistência com carrossel */
+}
+.grid-toolbar { margin-bottom: 12px; }
+.empty-state { padding: 16px; opacity: 0.75; }
