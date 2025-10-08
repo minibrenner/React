@@ -7,8 +7,8 @@
   position: absolute;
   top: -5%;
   transform: translateY(-50%);
-  width: 15px;
-  height: 30px;
+  width: 12px;
+  height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,12 +20,12 @@
 }
 
 .arrow-wrapper.prev {
-  left: 90%;
+  left: 94%;
   margin-top: 4px;
 }
 
 .arrow-wrapper.next {
-  left: 95%;
+  left: 97%;
 }
 
 .arrow-wrapper.prev .arrow {
