@@ -1,45 +1,125 @@
-import React, { useMemo, useState, useCallback } from "react";
-import { videos as allVideos } from "../../data/videos"; // dados da biblioteca
-import GridSection from "../GridSection";                // index.jsx export default
-import FiltersBar from "./FiltersBar";                   // toolbar (UI)
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import GridSection from "../GridSection";
+import FiltersBar from "./FiltersBar";
+import { fetchVideos } from "../../services/api";
 
-// Normalizador simples (case-insensitive)
-const norm = (s) => (s ?? "").toString().trim().toLowerCase();
+const PLACEHOLDER_THUMB = `${import.meta.env.BASE_URL}placeholder-thumb.svg`;
+const norm = (value) => (value ?? "").toString().trim().toLowerCase();
 
 export default function LibraryPage() {
-  // ----- Estado -----
   const [search, setSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState(() => new Set());
   const [selectedCompanies, setSelectedCompanies] = useState(() => new Set());
 
-  // ----- Opções dinâmicas (derivadas dos dados) -----
+  const [allVideos, setAllVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        setErr("");
+        setLoading(true);
+
+        const data = await fetchVideos({
+          limit: 9999,
+          offset: 0,
+          tipo: "video",
+        });
+
+        if (cancelled) return;
+
+        const normalized = data.map((video) => {
+          if (video.youtubeId) {
+            return {
+              ...video,
+              thumbUrl: `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`,
+            };
+          }
+
+          const thumb = video.thumbUrl;
+          if (typeof thumb === "string" && thumb.length > 0) {
+            if (/^https?:\/\//i.test(thumb)) {
+              return { ...video, thumbUrl: thumb };
+            }
+            const normalizedPath = thumb.startsWith("/")
+              ? thumb.slice(1)
+              : thumb;
+            return {
+              ...video,
+              thumbUrl: `${import.meta.env.BASE_URL}${normalizedPath}`,
+            };
+          }
+
+          return { ...video, thumbUrl: PLACEHOLDER_THUMB };
+        });
+
+        setAllVideos(normalized);
+      } catch (error) {
+        if (!cancelled) {
+          setErr(error?.message || "Erro ao carregar videos");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const { categories, companies, totalAll } = useMemo(() => {
-    const catSet = new Set();
-    const compSet = new Set();
-    for (const v of allVideos) {
-      if (v?.category) catSet.add(v.category);
-      if (v?.company) compSet.add(v.company);
-    }
+    const categorySet = new Set();
+    const companySet = new Set();
+
+    allVideos.forEach((video) => {
+      if (video?.category) {
+        categorySet.add(video.category);
+      }
+      if (video?.company) {
+        companySet.add(video.company);
+      }
+    });
+
     return {
-      categories: Array.from(catSet).sort(),
-      companies: Array.from(compSet).sort(),
+      categories: Array.from(categorySet).sort(),
+      companies: Array.from(companySet).sort(),
       totalAll: allVideos.length,
     };
-  }, []); // se os dados são estáticos, [] é suficiente
+  }, [allVideos]);
 
-  // ----- Handlers (toggle/clear) -----
-  const toggleCategory = useCallback((cat) => {
+  const toggleCategory = useCallback((category) => {
     setSelectedCategories((prev) => {
       const next = new Set(prev);
-      next.has(cat) ? next.delete(cat) : next.add(cat);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
       return next;
     });
   }, []);
 
-  const toggleCompany = useCallback((comp) => {
+  const toggleCompany = useCallback((company) => {
     setSelectedCompanies((prev) => {
       const next = new Set(prev);
-      next.has(comp) ? next.delete(comp) : next.add(comp);
+      if (next.has(company)) {
+        next.delete(company);
+      } else {
+        next.add(company);
+      }
       return next;
     });
   }, []);
@@ -50,34 +130,33 @@ export default function LibraryPage() {
     setSelectedCompanies(new Set());
   }, []);
 
-  // ----- Filtro + Busca (useMemo para performance) -----
   const filteredVideos = useMemo(() => {
-    const hasCat = selectedCategories.size > 0;
-    const hasComp = selectedCompanies.size > 0;
-    const q = norm(search);
+    const hasCategoryFilter = selectedCategories.size > 0;
+    const hasCompanyFilter = selectedCompanies.size > 0;
+    const query = norm(search);
 
-    return allVideos.filter((v) => {
-      const cat = v?.category ?? "";
-      const comp = v?.company ?? "";
+    return allVideos.filter((video) => {
+      const category = video?.category ?? "";
+      const company = video?.company ?? "";
 
-      // 1) Categoria
-      if (hasCat && !selectedCategories.has(cat)) return false;
+      if (hasCategoryFilter && !selectedCategories.has(category)) {
+        return false;
+      }
 
-      // 2) Empresa
-      if (hasComp && !selectedCompanies.has(comp)) return false;
+      if (hasCompanyFilter && !selectedCompanies.has(company)) {
+        return false;
+      }
 
-      // 3) Busca textual
-      if (q) {
-        const inTitle = norm(v?.title).includes(q);
-        const inDesc = norm(v?.description).includes(q);
-        return inTitle || inDesc;
+      if (query) {
+        const matchTitle = norm(video?.title).includes(query);
+        const matchDescription = norm(video?.description).includes(query);
+        return matchTitle || matchDescription;
       }
 
       return true;
     });
-  }, [search, selectedCategories, selectedCompanies]);
+  }, [search, selectedCategories, selectedCompanies, allVideos]);
 
-  // ----- Render -----
   return (
     <section className="section">
       <div className="container" style={{ display: "grid", gap: 16 }}>
@@ -97,27 +176,29 @@ export default function LibraryPage() {
           totalAll={totalAll}
         />
 
-        {/* Estado vazio */}
-        {filteredVideos.length === 0 ? (
-          <div
-            role="status"
-            aria-live="polite"
-            style={{
-              padding: 24,
-              border: "1px dashed #ccc",
-              borderRadius: 8,
-              textAlign: "center",
-              background: "#fff",
-            }}
-          >
-            Nenhum resultado encontrado para os filtros/busca atuais.
-           
-          </div>
-        ) : (
-          <GridSection videos={filteredVideos} />
+        {loading && <p style={{ opacity: 0.8 }}>Carregando videos...</p>}
+        {err && !loading && <p style={{ color: "tomato" }}>{err}</p>}
+
+        {!loading && !err && (
+          filteredVideos.length === 0 ? (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                padding: 24,
+                border: "1px dashed #ccc",
+                borderRadius: 8,
+                textAlign: "center",
+                background: "#fff",
+              }}
+            >
+              Nenhum resultado encontrado para os filtros ou busca atuais.
+            </div>
+          ) : (
+            <GridSection videos={filteredVideos} />
+          )
         )}
       </div>
     </section>
   );
 }
-
